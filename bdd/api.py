@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import sqlite3
 from pathlib import Path
 
 app = Flask(__name__)
+CORS(app)
 
 def get_db_connection():
     db_path = Path(__file__).parent.joinpath('vulnerabilites_iot.db')
@@ -22,3 +24,4 @@ def get_donnees():
 
 if __name__ == '__main__':
     app.run(debug=True)
+ 
