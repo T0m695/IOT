@@ -1,1 +1,3 @@
-"# IOT" 
+"# IOT"
+
+ Lancer setup.bat en administrateur
