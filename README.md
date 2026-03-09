@@ -1,4 +1,4 @@
-# 🔒 Plateforme de Priorisation des Vulnérabilités IoT
+# Plateforme de Priorisation des Vulnérabilités IoT
 
 Un système automatisé de collecte, enrichissement et priorisation des vulnérabilités affectant les **caméras IP** et autres équipements IoT réseau.
 
@@ -6,7 +6,7 @@ Un système automatisé de collecte, enrichissement et priorisation des vulnéra
 
 ---
 
-## 📋 Table des matières
+## Table des matières
 
 - [Vue d'ensemble](#vue-densemble)
 - [Dépendances](#dépendances)
@@ -19,7 +19,7 @@ Un système automatisé de collecte, enrichissement et priorisation des vulnéra
 
 ---
 
-## 👁️ Vue d'ensemble
+## Vue d'ensemble
 
 Cette plateforme automatise la collecte de vulnérabilités IoT via trois sources officielles :
 
@@ -29,17 +29,17 @@ Cette plateforme automatise la collecte de vulnérabilités IoT via trois source
 | **CISA KEV** | Vulnérabilités exploitées activement par les hackers | À chaque requête |
 | **FIRST EPSS** | Probabilité d'exploitation réelle | À chaque CVE |
 
-### ✨ Fonctionnalités
+### Fonctionnalités
 
-- ✅ **Collecte automatisée** : Synchronisation initiale complète + mise à jour quotidienne
-- ✅ **Enrichissement multi-critères** : Score CVSS (gravité) + EPSS (probabilité) + KEV (exploitation active)
-- ✅ **Score composite** : Calcul intelligent combinant les trois dimensions
-- ✅ **Dashboard interactif** : Interface Vue.js avec détails par vulnérabilité
-- ✅ **Persistance locale** : Base SQLite pour autonomie totale
+- **Collecte automatisée** : Synchronisation initiale complète + mise à jour quotidienne
+- **Enrichissement multi-critères** : Score CVSS (gravité) + EPSS (probabilité) + KEV (exploitation active)
+- **Score composite** : Calcul intelligent combinant les trois dimensions
+- **Dashboard interactif** : Interface Vue.js avec détails par vulnérabilité
+- **Persistance locale** : Base SQLite pour autonomie totale
 
 ---
 
-## 📦 Dépendances
+## Dépendances
 
 ### Backend (Python)
 
@@ -65,23 +65,22 @@ vite@^7.3.1           # Bundler et serveur dev
 
 ---
 
-## 🚀 Installation et déploiement
+## Installation et déploiement
 
-### 📍 Prérequis
+### Prérequis
 
-✅ Python 3.8+ installé et dans le PATH
-✅ Node.js 16+ et npm installés
-✅ Accès administrateur Windows (pour la tâche planifiée)
+Python 3.8+ installé et dans le PATH
+Node.js 16+ et npm installés
+Accès administrateur Windows (pour la tâche planifiée)
 
-### 🔧 Étape 1 : Déploiement automatique (RECOMMANDÉ)
+### Étape 1 : Déploiement automatique (RECOMMANDÉ)
 
 **C'est la façon la plus simple !**
 
 1. **Clic droit** sur `setup.bat`
 2. **Sélectionner "Exécuter en tant qu'administrateur"**
 3. **Cliquer "Oui"** quand demandé par le contrôle de compte d'utilisateur
-4. **Attendre la fin** (peut prendre 1-2 heures pour la première exécution)
-
+4. **Attendre la fin** (peut prendre un certain temps)
 ```
 INITIALISATION DU PROJET VULNERABILITES IOT
 
@@ -99,7 +98,7 @@ TERMINE !
 
 ---
 
-### 🔧 Étape 2 : Déploiement manuel (optionnel, si setup.bat échoue)
+### Étape 2 : Déploiement manuel (optionnel, si setup.bat échoue)
 
 #### A) Installer les dépendances Python
 
@@ -110,11 +109,8 @@ pip install requests
 #### B) Remplir la base de données avec l'historique complet
 
 ```bash
-cd c:\Users\revaz\OneDrive\Bureau\IOT
 python fetch_all_time.py
 ```
-
-**⏱️ Durée estimée :** 45 minutes à 2 heures (selon votre connexion)
 
 **Sortie attendue :**
 ```
@@ -130,19 +126,18 @@ Requête NIST : résultats 4000 à 6000...
 #### C) Installer les dépendances Node.js
 
 ```bash
-cd c:\Users\revaz\OneDrive\Bureau\IOT\dashboard
 npm install
 ```
 
 #### D) Configurer la mise à jour quotidienne (Windows)
 
 ```bash
-schtasks /create /tn "MAJ_Quotidienne_IoT" /tr "python.exe 'C:\Users\revaz\OneDrive\Bureau\IOT\fetch.py'" /sc daily /st 00:01 /f
+schtasks /create /tn "MAJ_Quotidienne_IoT" /tr "python.exe 'C:CHEMIN_DU_PROJET\fetch.py'" /sc daily /st 00:01 /f
 ```
 
 ---
 
-## 🎯 Guide d'utilisation
+## Guide d'utilisation
 
 ### Lancer le système complet
 
@@ -151,7 +146,7 @@ schtasks /create /tn "MAJ_Quotidienne_IoT" /tr "python.exe 'C:\Users\revaz\OneDr
 #### Terminal 1 : API Backend (port 5000)
 
 ```bash
-cd c:\Users\revaz\OneDrive\Bureau\IOT\bdd
+cd c:\CHEMIN_DU_PROJET\bdd
 python api.py
 ```
 
@@ -161,7 +156,7 @@ WARNING: This is a development server. Do not use it in production.
 Running on http://127.0.0.1:5000
 ```
 
-✅ **Laissez ce terminal ouvert** (l'API doit rester active)
+**Laissez ce terminal ouvert** (l'API doit rester active)
 
 ---
 
@@ -170,7 +165,7 @@ Running on http://127.0.0.1:5000
 Ouvrez un **nouveau terminal** :
 
 ```bash
-cd c:\Users\revaz\OneDrive\Bureau\IOT\dashboard
+cd c:\CHEMIN_DU_PROJET\dashboard
 npm run dev
 ```
 
@@ -182,7 +177,7 @@ VITE v7.3.1  ready in 123 ms
   ➜  press h + enter to show help
 ```
 
-✅ **Laissez ce terminal aussi ouvert**
+**Laissez ce terminal aussi ouvert**
 
 ---
 
@@ -194,9 +189,9 @@ Ouvrez votre navigateur et allez à :
 http://localhost:5173
 ```
 
-Vous devriez voir la **liste des vulnérabilités** ! 🎉
+Vous devriez voir la **liste des vulnérabilités** !
 
-### 📊 Votre tableau de bord
+### Votre tableau de bord
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -217,7 +212,7 @@ Vous devriez voir la **liste des vulnérabilités** ! 🎉
 └─────────────────────────────────────────────┘
 ```
 
-### 🔍 Voir les détails d'une vulnérabilité
+### Voir les détails d'une vulnérabilité
 
 1. **Cliquez** sur une vulnérabilité dans la liste
 2. La page affiche :
@@ -231,7 +226,7 @@ Vous devriez voir la **liste des vulnérabilités** ! 🎉
 
 ---
 
-## 📍 Exemples de données
+## Exemples de données
 
 ### Données brutes (SQLite)
 
@@ -298,9 +293,9 @@ Score = (CVSS × 0.5) + (EPSS × 10) + (KEV × 3.0)
 
 ---
 
-## 🔧 Architecture
+## Architecture
 
-### 📐 Diagramme du pipeline
+### Diagramme du pipeline
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -351,7 +346,7 @@ Score = (CVSS × 0.5) + (EPSS × 10) + (KEV × 3.0)
                     (localhost:5173)
 ```
 
-### 📁 Structure des fichiers
+### Structure des fichiers
 
 ```
 IOT/
@@ -386,9 +381,9 @@ IOT/
 
 ---
 
-## 🐛 Dépannage
+## Dépannage
 
-### ❌ "Failed to fetch" dans le dashboard
+### "Failed to fetch" dans le dashboard
 
 **Cause :** L'API backend n'est pas lancée ou n'est pas accessible.
 
@@ -404,7 +399,7 @@ http://localhost:5000/donnees
 
 ---
 
-### ❌ "Aucune donnée trouvée" (mais l'API répond "[]")
+### "Aucune donnée trouvée" (mais l'API répond "[]")
 
 **Cause :** La base de données est vide.
 
@@ -413,11 +408,11 @@ http://localhost:5000/donnees
 python fetch_all_time.py
 ```
 
-Attendez la fin de l'exécution (1-2h).
+Attendez la fin de l'exécution.
 
 ---
 
-### ❌ "ModuleNotFoundError: No module named 'requests'"
+### "ModuleNotFoundError: No module named 'requests'"
 
 **Cause :** requests n'est pas installé.
 
@@ -428,7 +423,7 @@ pip install requests
 
 ---
 
-### ❌ Tâche planifiée ne s'exécute pas
+### Tâche planifiée ne s'exécute pas
 
 **Cause :** setup.bat n'a pas été lancé en administrateur.
 
@@ -443,7 +438,7 @@ schtasks /run /tn MAJ_Quotidienne_IoT
 
 ---
 
-### ❌ Port 5000 déjà utilisé
+### Port 5000 déjà utilisé
 
 **Cause :** Un autre service utilise le port 5000.
 
@@ -460,41 +455,41 @@ const response = await fetch('http://localhost:5001/donnees')
 
 ---
 
-## 📚 Documentation technique
+## Documentation technique
 
 ### Scripts Python
 
 #### `fetch.py` - Mise à jour quotidienne
 
-- ⏱️ S'exécute chaque nuit à **00h01**
-- 🔍 Recherche les CVE modifiées **hier seulement**
-- 🎯 Mots-clés ciblés : "ip camera", "network camera", "NVR", "ONVIF", "Hikvision"
-- ⚡ Rapide (quelques minutes)
+- ⏱S'exécute chaque nuit à **00h01**
+- Recherche les CVE modifiées **hier seulement**
+- Mots-clés ciblés : "ip camera", "network camera", "NVR", "ONVIF", "Hikvision"
+- Rapide (quelques minutes)
 
 #### `fetch_all_time.py` - Synchronisation complète
 
-- 🔄 S'exécute **une fois uniquement**
-- 📊 Récupère **TOUT l'historique** (pas de filtre de date)
-- 📡 Pagination automatique (2000 résultats par requête)
-- ⏳ Lent (1-2 heures) mais nécessaire pour l'initialisation
+- S'exécute **une fois uniquement**
+- Récupère **TOUT l'historique** (pas de filtre de date)
+- Pagination automatique (2000 résultats par requête)
+- Lent mais nécessaire pour l'initialisation
 
 ### Composants Vue.js
 
 #### `Vulnerabilites.vue` - Liste
 
-- 📝 Affiche toutes les CVE sous forme de "cartes"
-- 🎨 Code couleur dynamique pour le score de priorité (vert → rouge)
-- 🔗 Clic sur une carte → navigation vers les détails
+- Affiche toutes les CVE sous forme de "cartes"
+- Code couleur dynamique pour le score de priorité (vert → rouge)
+- Clic sur une carte → navigation vers les détails
 
 #### `VulnerabiliteDetail.vue` - Détails
 
-- 🔎 Affiche tous les champs d'une CVE sélectionnée
-- 📖 Description complète en bas
-- 🔙 Lien implicite pour revenir à la liste
+- Affiche tous les champs d'une CVE sélectionnée
+- Description complète en bas
+- Lien implicite pour revenir à la liste
 
 ---
 
-## 🎓 Concepts clés
+## Concepts clés
 
 ### CVSS (Common Vulnerability Scoring System)
 - **Échelle :** 0 à 10
@@ -522,7 +517,7 @@ Plus le score est élevé, plus la vulnérabilité est **critique**.
 
 ---
 
-## 📞 Support
+## Support
 
 **Pour déboguer :**
 
@@ -552,7 +547,3 @@ Plus le score est élevé, plus la vulnérabilité est **critique**.
 - [ ] Vulnérabilités affichées ✅
 
 ---
-
-**Créé par :** Revaz  
-**Dernière mise à jour :** 8 mars 2026  
-**Status :** ✅ Production
