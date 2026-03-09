@@ -2,7 +2,7 @@
 **Cours :** UQAC 8INF917 — Sécurité informatique pour l'Internet des Objets  
 **Projet :** Plateforme de priorisation des vulnérabilités IoT  
 **Périmètre :** Caméras IP  
-**Composants documentés :** `fetch_all_time.py`, `fetch.py`, `setup.bat`
+**Composants documentés :** `fetch_all_time.py`, `fetch.py`, `setup.bat`, `API Flask`, `Interface Vue.js`
 
 ---
 
@@ -309,6 +309,17 @@ function getPriorityColor(score) {
 
 Cette fonction réalise une interpolation linéaire entre le vert (`rgb(46, 204, 64)`) pour un score de 0 et le rouge (`rgb(231, 76, 60)`) pour un score de 10. Ce retour visuel permet à l'utilisateur d'identifier d'un coup d'œil les vulnérabilités les plus critiques, sans avoir à lire les valeurs numériques.
 
+**Filtres de tri :**  
+La liste des vulnérabilités est équipée de trois filtres côté client pour trier et afficher les CVE selon différents critères :
+
+1. **Filtre par numéro CVE** : Permet de filtrer l'affichage en fonction du numéro de CVE.
+
+2. **Filtre par date de collecte** : Permet de trier les CVE par la date à laquelle elles ont été collectées dans la base de données.
+
+3. **Filtre par plage de score de priorité** : Permet de trier les CVE par leur score de priorisation, en affichant les vulnérabilités du score le plus élevé au moins élevé.
+
+Ces trois filtres permettent à l'utilisateur de trier et d'afficher les CVE correspondant aux critères spécifiés.
+
 La navigation vers la fiche détaillée s'effectue via un `router.push` déclenché au clic sur la carte :
 
 ```javascript
@@ -363,8 +374,6 @@ Les CVE antérieures à 2018 n'ont souvent que des scores CVSS v2. Le code ignor
 
 ### 8.2 Limites de l'interface web
 
-**Absence de filtrage et de tri :** la liste des vulnérabilités ne propose pas de mécanisme de recherche, de filtre par score CVSS ou EPSS, ni de tri par score de priorité. Pour un usage opérationnel, ces fonctionnalités sont indispensables.
-
 **Chargement complet sans pagination :** l'API retourne l'ensemble des CVE en une seule requête. Pour une base contenant plusieurs milliers d'entrées, cela peut entraîner des temps de chargement significatifs et une consommation mémoire côté client importante.
 
 **Recommandations statiques :** la page de recommandations ne propose pas de recommandations contextuelles liées aux CVE affichées. Cela correspond tout de même au demande et à une utilisation dans un cas concret. Une évolution possible serait de générer des recommandations dynamiques selon les CWE les plus fréquentes dans la base.
@@ -373,10 +382,9 @@ Les CVE antérieures à 2018 n'ont souvent que des scores CVSS v2. Le code ignor
 
 Pour une prochaine itération, les améliorations possibles seraient :
 
-1. Ajouter des filtres côté interface (par score, par date, par présence KEV) ;
-2. Mettre en place une pagination côté API et côté frontend ;
-3. Enrichir les logs avec le module `logging` pour faciliter le suivi opérationnel ;
-4. Ajouter la gestion des scores CVSS v2 pour les CVE historiques.
+1. Mettre en place une pagination côté API et côté frontend ;
+2. Enrichir les logs avec le module `logging` pour faciliter le suivi opérationnel ;
+3. Ajouter la gestion des scores CVSS v2 pour les CVE historiques.
 
 ---
 
