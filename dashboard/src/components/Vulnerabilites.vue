@@ -10,7 +10,7 @@ const router = useRouter()
 
 
 // Pour gérer le tri
-const sortMode = ref('original') // 'original', 'date', 'cve_id'
+const sortMode = ref('original') // 'original', 'date', 'cve_id', 'priorite_score'
 const originalVulns = ref([])
 
 const goToDetail = (id) => {
@@ -26,10 +26,14 @@ function setSort(mode) {
     })
   } else if (mode === 'cve_id') {
     vulnerabilites.value = [...originalVulns.value].sort((a, b) => {
-      // Tri alphanumérique croissant sur cve_id
       if (!a.cve_id) return 1;
       if (!b.cve_id) return -1;
       return a.cve_id.localeCompare(b.cve_id);
+    })
+  } else if (mode === 'priorite_score') {
+    vulnerabilites.value = [...originalVulns.value].sort((a, b) => {
+      // Tri décroissant sur priorite_score
+      return (Number(b.priorite_score) || 0) - (Number(a.priorite_score) || 0);
     })
   } else {
     vulnerabilites.value = [...originalVulns.value]
@@ -86,6 +90,7 @@ onMounted(async () => {
         <button @click="setSort('original')" class="sort-btn" :class="{ active: sortMode === 'original' }">Ordre d'origine</button>
         <button @click="setSort('date')" class="sort-btn" :class="{ active: sortMode === 'date' }">Trier par date</button>
         <button @click="setSort('cve_id')" class="sort-btn" :class="{ active: sortMode === 'cve_id' }">Trier par CVE</button>
+        <button @click="setSort('priorite_score')" class="sort-btn" :class="{ active: sortMode === 'priorite_score' }">Trier par priorité</button>
       </div>
       <div v-if="vulnerabilites.length === 0" class="center">Aucune donnée trouvée.</div>
       <div v-else class="vuln-list">
