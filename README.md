@@ -1,6 +1,6 @@
 # Plateforme de Priorisation des Vulnérabilités IoT
 
-Un système automatisé de collecte, enrichissement et priorisation des vulnérabilités affectant les **caméras IP** et autres équipements IoT réseau.
+Un système automatisé de collecte, enrichissement et priorisation des vulnérabilités affectant les caméras IP et autres équipements IoT réseau.
 
 **Cours :** UQAC 8INF917 — Sécurité informatique pour l'Internet des Objets
 
