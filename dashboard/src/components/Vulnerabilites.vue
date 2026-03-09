@@ -2,13 +2,38 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 const vulnerabilites = ref([])
 const loading = ref(true)
 const error = ref(null)
 const router = useRouter()
 
+
+// Pour gérer le tri
+const sortMode = ref('original') // 'original', 'date', 'cve_id'
+const originalVulns = ref([])
+
 const goToDetail = (id) => {
   router.push({ name: 'VulnerabiliteDetail', params: { id } })
+}
+
+
+function setSort(mode) {
+  sortMode.value = mode
+  if (mode === 'date') {
+    vulnerabilites.value = [...originalVulns.value].sort((a, b) => {
+      return new Date(b.date_collecte) - new Date(a.date_collecte)
+    })
+  } else if (mode === 'cve_id') {
+    vulnerabilites.value = [...originalVulns.value].sort((a, b) => {
+      // Tri alphanumérique croissant sur cve_id
+      if (!a.cve_id) return 1;
+      if (!b.cve_id) return -1;
+      return a.cve_id.localeCompare(b.cve_id);
+    })
+  } else {
+    vulnerabilites.value = [...originalVulns.value]
+  }
 }
 
 
@@ -40,7 +65,9 @@ onMounted(async () => {
   try {
     const response = await fetch('http://localhost:5000/donnees')
     if (!response.ok) throw new Error('Erreur lors de la récupération des données')
-    vulnerabilites.value = await response.json()
+    const data = await response.json()
+    vulnerabilites.value = data
+    originalVulns.value = [...data]
   } catch (err) {
     error.value = err.message
   } finally {
@@ -55,9 +82,16 @@ onMounted(async () => {
     <div v-if="loading" class="center">Chargement...</div>
     <div v-else-if="error" class="center error">Erreur : {{ error }}</div>
     <div v-else>
+      <div class="sort-btn-group">
+        <button @click="setSort('original')" class="sort-btn" :class="{ active: sortMode === 'original' }">Ordre d'origine</button>
+        <button @click="setSort('date')" class="sort-btn" :class="{ active: sortMode === 'date' }">Trier par date</button>
+        <button @click="setSort('cve_id')" class="sort-btn" :class="{ active: sortMode === 'cve_id' }">Trier par CVE</button>
+      </div>
       <div v-if="vulnerabilites.length === 0" class="center">Aucune donnée trouvée.</div>
       <div v-else class="vuln-list">
         <div class="vuln-card" v-for="(item, idx) in vulnerabilites" :key="idx" @click="item.cve_id && goToDetail(item.cve_id)">
+
+
           <div class="vuln-header">
             <span class="vuln-id">{{ item.cve_id || item.id || 'ID inconnu' }}</span>
           </div>
@@ -77,6 +111,31 @@ onMounted(async () => {
   </div>
 </template>
 <style scoped>
+
+.sort-btn-group {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+.sort-btn {
+  padding: 0.5em 1.2em;
+  background: #0077ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.sort-btn.active, .sort-btn:focus {
+  background: #005bb5;
+  box-shadow: 0 0 0 2px #0077ff44;
+}
+.sort-btn:hover {
+  background: #005bb5;
+}
+
 .vuln-list-container {
   font-size: 1.2rem;
   margin: 2rem 0;
@@ -139,3 +198,4 @@ strong {
   display: inline-block;
 }
 </style>
+
