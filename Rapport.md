@@ -1,6 +1,7 @@
 # Rapport Technique — Pipeline de Collecte et de Priorisation des Vulnérabilités IoT
 **Cours :** UQAC 8INF917 — Sécurité informatique pour l'Internet des Objets  
 **Projet :** Plateforme de priorisation des vulnérabilités IoT  
+**Équipe :** Gouhier Mattéo, Paillet Tom, Revazishvili Nia \
 **Périmètre :** Caméras IP  
 **Composants documentés :** `fetch_all_time.py`, `fetch.py`, `setup.bat`, `API Flask`, `Interface Vue.js`
 
