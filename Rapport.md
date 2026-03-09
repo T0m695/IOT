@@ -82,7 +82,7 @@ crontab -e
 
 ### 4.1 Objectif
 
-Ce script a pour but d'effectuer une **collecte initiale exhaustive** de toutes les CVE référencées dans la base NVD pour les mots-clé `"ip camera"`, `"network camera"`, `"NVR"`, `"ONVIF"`, `"Hikvision"`. Avoir tout ces mots permet d'avoir plus de résultat, plutôt que de n'avoir que les résultats plus restreint avec `"ip camera"`. Il s'exécute une seule fois lors du déploiement et peut prendre plusieurs minutes selon le volume de données. La structure permet de remplacer ces mots par le modèle exacte d'une caméra si nécessaire.
+Ce script a pour but d'effectuer une **collecte initiale exhaustive** de toutes les CVE référencées dans la base NVD pour les mots-clé `"ip camera"`, `"network camera"`, `"NVR"`, `"ONVIF"`, `"Hikvision"`. Avoir tout ces mots permet d'avoir plus de résultats, plutôt que de n'avoir que les résultats plus restreint avec `"ip camera"`. Il s'exécute une seule fois lors du déploiement et peut prendre plusieurs minutes selon le volume de données. La structure permet de remplacer ces mots par le modèle exacte d'une caméra si nécessaire.
 
 ### 4.2 Schéma de la base de données
 
@@ -257,7 +257,7 @@ L'interface utilisateur repose sur une architecture découplée classique de typ
 └─────────────────────────────────────────────────────┘
 ```
 
-Ce choix de stack est pertinent dans le cadre d'un MVP académique : Flask offre une mise en œuvre rapide d'une API REST, tandis que Vue.js 3 permet de construire une interface réactive avec une courbe d'apprentissage modérée.
+Flask offre une mise en œuvre rapide d'une API REST, tandis que Vue.js 3 permet de construire une interface réactive.
 
 ### 7.2 API REST — app.py
 
@@ -275,7 +275,7 @@ def get_donnees():
     return jsonify(result)
 ```
 
-La configuration `conn.row_factory = sqlite3.Row` permet de sérialiser chaque ligne SQLite en dictionnaire Python, qui est ensuite converti en JSON par `jsonify`. La gestion CORS est activée via `flask_cors`, ce qui est indispensable pour autoriser les requêtes cross-origin émises par le front Vue.js tournant sur un port distinct.
+La configuration `conn.row_factory = sqlite3.Row` permet de sérialiser chaque ligne SQLite en dictionnaire Python, qui est ensuite converti en JSON par `jsonify`. La gestion CORS est activée via `flask_cors`, ce qui autorise les requêtes cross-origin émises par le front Vue.js tournant sur un port distinct.
 
 **Point notable :** la route `/donnees` retourne l'intégralité des entrées de la base sans pagination ni filtrage serveur. Pour un volume de données modéré (quelques milliers de CVE), cette approche est acceptable. Pour une mise à l'échelle, il serait préférable d'implémenter des paramètres de filtrage et de pagination côté API.
 
@@ -289,13 +289,13 @@ Le routeur Vue Router définit trois routes correspondant aux trois vues de l'ap
 | `/vulnerabilite/:id` | VulnerabiliteDetail.vue | Fiche détaillée d'une CVE |
 | `/recommandations` | Recommandations.vue | Page de recommandations de sécurité |
 
-L'utilisation de `createWebHistory()` permet de bénéficier d'URLs propres sans hash, ce qui est une bonne pratique pour l'expérience utilisateur.
+L'utilisation de `createWebHistory()` permet de bénéficier d'URLs propres sans hash.
 
 ### 7.4 Vue liste des vulnérabilités — Vulnerabilites.vue
 
-Ce composant constitue la page d'accueil de l'application. Il récupère les données depuis l'API au montage du composant (`onMounted`) et affiche les vulnérabilités sous forme de cartes cliquables.
+`la composante Vulnerabilites.vue` est la page d'accueil de l'application. Il récupère les données depuis l'API au montage du composant (`onMounted`) et affiche les vulnérabilités sous forme de cartes cliquables.
 
-Une fonctionnalité notable est le **codage couleur dynamique** du score de priorité :
+Une fonctionnalité est le **codage couleur dynamique** du score de priorité :
 
 ```javascript
 function getPriorityColor(score) {
@@ -307,7 +307,7 @@ function getPriorityColor(score) {
 }
 ```
 
-Cette fonction réalise une interpolation linéaire entre le vert (`rgb(46, 204, 64)`) pour un score de 0 et le rouge (`rgb(231, 76, 60)`) pour un score de 10. Ce retour visuel immédiat permet à l'utilisateur d'identifier d'un coup d'œil les vulnérabilités les plus critiques, sans avoir à lire les valeurs numériques. C'est un choix UX judicieux et cohérent avec les pratiques de visualisation en cybersécurité.
+Cette fonction réalise une interpolation linéaire entre le vert (`rgb(46, 204, 64)`) pour un score de 0 et le rouge (`rgb(231, 76, 60)`) pour un score de 10. Ce retour visuel permet à l'utilisateur d'identifier d'un coup d'œil les vulnérabilités les plus critiques, sans avoir à lire les valeurs numériques.
 
 La navigation vers la fiche détaillée s'effectue via un `router.push` déclenché au clic sur la carte :
 
@@ -325,9 +325,9 @@ Ce composant affiche la fiche complète d'une CVE sélectionnée. L'identifiant 
 vuln.value = data.find(v => v.cve_id == id)
 ```
 
-Cette approche de **filtrage client** est efficace pour le volume de données actuel. La fiche affiche l'ensemble des champs de la base de données, avec une mise en évidence de la description dans un bloc stylisé distinct des métadonnées.
+Cette approche de **filtrage client** est efficace pour le volume de données actuel. La fiche affiche l'ensemble des champs de la base de données, avec une mise en évidence de la description dans un bloc.
 
-Le mapping `fieldLabels` assure une présentation lisible des noms de champs techniques :
+Le mapping `fieldLabels` permet une présentation lisible des noms de champs techniques :
 
 ```javascript
 const fieldLabels = {
@@ -344,7 +344,7 @@ const fieldLabels = {
 
 La page de recommandations présente cinq catégories de bonnes pratiques de sécurité applicables aux environnements IoT : patching, configuration sécurisée, segmentation réseau, désactivation des services inutiles, et bonnes pratiques générales. Ce contenu est statique et constitue une section d'aide à la décision complémentaire aux données de vulnérabilités.
 
-Ce choix de contenu statique est pragmatique pour un MVP : les recommandations générales en cybersécurité IoT évoluent peu, et leur intégration statique évite de complexifier inutilement l'architecture.
+Les recommandations générales en cybersécurité IoT évoluent peu, et leur intégration statique évite de complexifier inutilement l'architecture.
 
 ---
 
@@ -357,7 +357,7 @@ Chaque CVE déclenche une requête individuelle vers l'API EPSS. Sur un volume d
 `GET https://api.first.org/data/v1/epss?cve=CVE-XXXX,CVE-YYYY,...`
 
 **Absence de gestion CVSS v2 :**  
-Les CVE antérieures à 2018 n'ont souvent que des scores CVSS v2. Le code ignore ces scores et stocke `0.0`, ce qui fausse artificiellement la priorité de vulnérabilités pourtant sévères. Ce choix a été fait en partant du principe que ce site permet surtout de mettre à jour la base, de voir les nouvelles vulnérabilités, c'est son point principal.
+Les CVE antérieures à 2018 n'ont souvent que des scores CVSS v2. Le code ignore ces scores et stocke `0.0`. Ce choix a été fait en partant du principe que ce site permet surtout de mettre à jour la base, de voir les nouvelles vulnérabilités, c'est son point principal.
 
 
 
@@ -367,11 +367,11 @@ Les CVE antérieures à 2018 n'ont souvent que des scores CVSS v2. Le code ignor
 
 **Chargement complet sans pagination :** l'API retourne l'ensemble des CVE en une seule requête. Pour une base contenant plusieurs milliers d'entrées, cela peut entraîner des temps de chargement significatifs et une consommation mémoire côté client importante.
 
-**Recommandations statiques :** la page de recommandations ne propose pas de recommandations contextuelles liées aux CVE affichées. Cela correspond tout de même au demande et à une utilisation dans un cas concret. Une évolution intéressante serait de générer des recommandations dynamiques selon les CWE les plus fréquentes dans la base, mais demanderais un travail beaucoup plus grand de scrapping de site de recommandation.
+**Recommandations statiques :** la page de recommandations ne propose pas de recommandations contextuelles liées aux CVE affichées. Cela correspond tout de même au demande et à une utilisation dans un cas concret. Une évolution possible serait de générer des recommandations dynamiques selon les CWE les plus fréquentes dans la base.
 
 ### 9.3 Pistes d'amélioration prioritaires
 
-Pour une prochaine itération, les améliorations les plus impactantes seraient :
+Pour une prochaine itération, les améliorations possibles seraient :
 
 1. Ajouter des filtres côté interface (par score, par date, par présence KEV) ;
 2. Mettre en place une pagination côté API et côté frontend ;
@@ -382,10 +382,10 @@ Pour une prochaine itération, les améliorations les plus impactantes seraient 
 
 ## 9. Conclusion
 
-La plateforme de priorisation des vulnérabilités IoT développée dans le cadre de ce projet constitue une réponse fonctionnelle et cohérente aux exigences du MVP. Elle couvre l'intégralité de la chaîne de valeur : de la collecte automatisée des données brutes depuis des sources de référence reconnues, jusqu'à la restitution visuelle dans une interface web ergonomique.
+La plateforme de priorisation des vulnérabilités IoT développée dans le cadre de ce projet couvre la chaîne de valeur : de la collecte automatisée des données brutes depuis des sources de référence reconnues, jusqu'à la restitution visuelle dans une interface web ergonomique.
 
-Le pipeline de collecte développé constitue une base solide et fonctionnelle pour la plateforme de priorisation des vulnérabilités IoT. Il répond aux exigences fondamentales du MVP : collecte automatisée depuis trois sources open-source reconnues (NVD, CISA KEV, FIRST EPSS), enrichissement multi-critères, et persistance locale dans une base SQLite bien structurée.
+Le pipeline de collecte développé constitue une base pour la plateforme de priorisation des vulnérabilités IoT. Il répond aux exigences fondamentales qui sont la collecte automatisée depuis trois sources open-source reconnues (NVD, CISA KEV, FIRST EPSS), l'enrichissement multi-critères, et la persistance locale dans une base SQLite bien structurée.
 
-La formule de priorisation adoptée est justifiée et aligne la démarche sur les recommandations des organismes de référence en cybersécurité. L'architecture en deux scripts distincts — collecte historique unique et collecte différentielle quotidienne — est une décision de conception pertinente qui sépare clairement les phases d'initialisation et de maintenance.
+La formule de priorisation adoptée aligne la démarche sur les recommandations des organismes de référence en cybersécurité. L'architecture en deux scripts distincts (collecte historique unique et collecte différentielle quotidienne) permet de séparer clairement les phases d'initialisation et de maintenance.
 
-L'interface Vue.js apporte une valeur ajoutée concrète par rapport à une consultation directe de la base de données : le codage couleur du score de priorité, la navigation entre liste et fiche détaillée, et la page de recommandations offrent une expérience utilisateur adaptée à un public de professionnels de la sécurité.
+L'interface Vue.js apporte une valeur ajoutée par rapport à une consultation directe de la base de données. En effet, le codage couleur du score de priorité, la navigation entre liste et fiche détaillée, et la page de recommandations offrent une expérience utilisateur adaptée à un public de professionnels ou d'amateurs de la sécurité.
